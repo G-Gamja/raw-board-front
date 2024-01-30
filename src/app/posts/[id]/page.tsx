@@ -10,6 +10,7 @@ import { logOut } from "@/utils/auth";
 import styles from "./page.module.scss";
 import { useRouter } from "next/navigation";
 
+// FIXME 페이지 이동시에 isDesc변수가 초기화 되어버림. 로컬스토리지에 저장해야할듯
 export default function Posts({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [inputTitle, setInputTitle] = useState<string>("");
