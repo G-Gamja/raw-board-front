@@ -1,0 +1,32 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.input {
+  height: 7rem;
+  width: 40rem;
+
+  font-size: 4rem;
+
+  margin: 2rem 0;
+}
+
+.loginButton {
+  height: 5rem;
+  width: 5rem;
+
+  font-size: 3rem;
+
+  margin: 2rem 0;
+}

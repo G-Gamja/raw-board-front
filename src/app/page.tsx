@@ -1,6 +1,7 @@
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
 
+// TODO  wrapper 구현 & 쿠키 없으면 로그인 페이지 있으면 포스트 페이지로 이동
 export default function Home() {
   return (
     <main className={styles.main}>

@@ -1,0 +1,50 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+}
+
+.postItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+}
+
+.postTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.postBody {
+  font-size: 1.6rem;
+  margin: 0 3rem;
+}
+
+.postsWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortButton {
+  font-size: 1.6rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ccc;
+  }
+}
