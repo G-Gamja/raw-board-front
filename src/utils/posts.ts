@@ -4,12 +4,15 @@ import { deleteCall, get, post, update } from "./axios";
 export async function getPosts(
   page: number,
   perPage?: number,
-  isDesc?: boolean
+  isDesc?: boolean,
+  keyword?: string
 ) {
   const data = (await get(
     `http://www.localhost/api/posts?page=${page}${
       perPage ? `&perPage=${perPage}` : ""
-    }${isDesc ? `&isDesc=${isDesc}` : ""}`
+    }${isDesc ? `&isDesc=${isDesc}` : ""}
+    ${keyword ? `&keyword=${keyword}` : ""}
+    `
   )) as GetPostsResponse;
 
   return data.data;
@@ -17,6 +20,14 @@ export async function getPosts(
 
 export async function getPostById(id: number) {
   const data = (await get(`http://www.localhost/api/posts/id/${id}`)) as Post;
+
+  return data;
+}
+
+export async function getMyPosts() {
+  const data = (await get(
+    `http://www.localhost/api/posts/my`
+  )) as GetPostsResponse;
 
   return data;
 }

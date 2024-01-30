@@ -4,7 +4,7 @@ export type Post = {
   title: string;
   content: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
   deleted_at?: string;
   is_active: number;
   username: string;

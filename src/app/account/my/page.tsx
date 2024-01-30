@@ -1,20 +1,18 @@
 "use client";
 
-import { getPosts, writePost } from "@/utils/posts";
+import { deletePostById, getMyPosts, getPosts, writePost } from "@/utils/posts";
 import { useEffect, useState } from "react";
 
 import { Post } from "@/types/post";
 import { User } from "@/types/user";
 import { getUser } from "@/utils/user";
-import { logOut } from "@/utils/auth";
 import styles from "./page.module.scss";
 import { useRouter } from "next/navigation";
 
-export default function Posts({ params }: { params: { id: string } }) {
+export default function My() {
   const router = useRouter();
   const [inputTitle, setInputTitle] = useState<string>("");
   const [inputContent, setInputContent] = useState<string>("");
-  const [inputSearch, setInputSearch] = useState("");
 
   const [isWritePostClicked, setIsWritePostClicked] = useState(false);
 
@@ -22,17 +20,10 @@ export default function Posts({ params }: { params: { id: string } }) {
 
   const [fetchedUser, setFetchedUser] = useState<User>();
 
-  const [isDesc, setIsDesc] = useState<boolean>(true);
-
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getPosts(
-        Number(params.id),
-        undefined,
-        isDesc,
-        inputSearch
-      );
-      setFetchedPosts(data);
+      const data = await getMyPosts();
+      setFetchedPosts(data.data);
 
       const userData = await getUser();
 
@@ -40,29 +31,17 @@ export default function Posts({ params }: { params: { id: string } }) {
     };
 
     fetchData();
-  }, [isDesc, params.id, isWritePostClicked, inputSearch]);
+  }, [isWritePostClicked]);
 
   // TODO 총 페이지 수를 받아와서 다음 페이지 버튼을 비활성화 시키는 로직 구현
   return (
     <main className={styles.main}>
-      <div
-        className={styles.header}
-        onClick={() => {
-          router.push(`/account/my`);
-        }}
-      >
+      <div className={styles.header}>My Account</div>
+      <div className={styles.header}>
         {fetchedUser?.email}
         &nbsp;/&nbsp;
         {fetchedUser?.username}
       </div>
-      <input
-        type="text"
-        onChange={(input) => {
-          setInputSearch(input.target.value);
-        }}
-        placeholder="search"
-        className={styles.searchInput}
-      />
       <div className={styles.postsWrapper}>
         {fetchedPosts.map((post) => {
           const a = new Date(post.updated_at || post.created_at)
@@ -96,30 +75,7 @@ export default function Posts({ params }: { params: { id: string } }) {
           );
         })}
       </div>
-      <button
-        className={styles.sortButton}
-        onClick={() => {
-          setIsDesc(!isDesc);
-        }}
-      >
-        {isDesc ? "오름차순" : "내림차순"}
-      </button>
-      <button
-        className={styles.sortButton}
-        onClick={() => {
-          router.push(`/posts/${Number(params.id) + 1}`);
-        }}
-      >
-        {"다음 페이지"}
-      </button>
-      <button
-        className={styles.sortButton}
-        onClick={() => {
-          router.push(`/posts/${Number(params.id) - 1}`);
-        }}
-      >
-        {"이전 페이지"}
-      </button>
+
       <input
         type="text"
         onChange={(input) => {
@@ -150,21 +106,6 @@ export default function Posts({ params }: { params: { id: string } }) {
         }}
       >
         {"게시물 작성"}
-      </button>
-
-      <button
-        className={styles.sortButton}
-        onClick={async () => {
-          const response = await logOut();
-
-          // @ts-ignore
-          if (response.data === "SUCCESS") {
-            alert("로그아웃에 성공했습니다.");
-            router.push("/auth/login");
-          }
-        }}
-      >
-        {"로그아웃"}
       </button>
     </main>
   );

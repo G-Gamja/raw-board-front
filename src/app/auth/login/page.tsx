@@ -6,6 +6,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 // FIXME 최초 진입 쪽에 Wrapper로 구현하고 만약 쿠키가 없으면 로그인 페이지로 이동하게 구현
+
+// FIXME 가입 페이지도 구현
+
+// FIXME 로그인시에 auth정보를 전역변수에 저장해야하나 쿠키에 저장해야하나 고민
 export default function Login() {
   const router = useRouter();
   const [inputId, setInputId] = useState<string>();
@@ -17,11 +21,6 @@ export default function Login() {
       password: password,
     });
 
-    console.log("🚀 ~ login ~ data:", data);
-
-    // const token = getCookie("Authentication");
-
-    // NOTE 석세스 && 쿠키 있는지 확인
     if ((data as any).data === "SUCCESS") {
       router.push("/posts/1");
     }

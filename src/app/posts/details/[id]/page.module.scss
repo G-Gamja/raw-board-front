@@ -17,6 +17,21 @@
   margin-bottom: 2rem;
 }
 
+.commentItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+}
+
+.commentBody {
+  font-size: 1rem;
+  margin: 0 3rem;
+}
+
 .postTitle {
   font-size: 2rem;
   font-weight: bold;
