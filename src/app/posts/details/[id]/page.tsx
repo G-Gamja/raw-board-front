@@ -4,6 +4,7 @@ import { deleteCommentById, getComments, writeComment } from "@/utils/comments";
 import { deletePostById, getPostById, updatePostById } from "@/utils/posts";
 import { useEffect, useMemo, useState } from "react";
 
+import { AxiosError } from "axios";
 import { Comment } from "@/types/comments";
 import { Post } from "@/types/post";
 import styles from "./page.module.scss";
@@ -87,18 +88,17 @@ export default function Details({ params }: { params: { id: number } }) {
               onClick={async (e) => {
                 e.stopPropagation();
 
-                const response = await deleteCommentById(comment.id);
+                try {
+                  const response = await deleteCommentById(comment.id);
 
-                //@ts-ignore
-                if (response?.response?.error) {
-                  //@ts-ignore
-                  alert(response.response.error);
-                  return;
-                }
-
-                if ((response as { data?: string })?.data === "SUCCESS") {
-                  alert("댓글 삭제에 성공했습니다.");
-                  setIsButtonClicked(!isButtonClicked);
+                  if ((response as { data?: string })?.data === "SUCCESS") {
+                    alert("댓글 삭제에 성공했습니다.");
+                    setIsButtonClicked(!isButtonClicked);
+                  }
+                } catch (error) {
+                  if (error instanceof AxiosError) {
+                    alert(error.response?.data.message);
+                  }
                 }
               }}
             >
@@ -121,18 +121,16 @@ export default function Details({ params }: { params: { id: number } }) {
           e.stopPropagation();
           if (fetchedPost === undefined) return;
 
-          const response = await deletePostById(fetchedPost.id);
-
-          //@ts-ignore
-          if (response.response.error) {
-            //@ts-ignore
-            alert(response.response.error);
-            return;
-          }
-
-          if ((response as { data?: string })?.data === "SUCCESS") {
-            alert("게시물 삭제에 성공했습니다.");
-            router.push(`/posts/1`);
+          try {
+            const response = await deletePostById(fetchedPost.id);
+            if ((response as { data?: string })?.data === "SUCCESS") {
+              alert("게시물 삭제에 성공했습니다.");
+              router.push(`/posts/1`);
+            }
+          } catch (error) {
+            if (error instanceof AxiosError) {
+              alert(error.response?.data.message);
+            }
           }
         }}
       >

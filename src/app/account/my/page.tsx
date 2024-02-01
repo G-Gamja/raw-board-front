@@ -1,6 +1,7 @@
 "use client";
 
 import { deletePostById, getMyPosts, getPosts, writePost } from "@/utils/posts";
+import { logOut, withdrawMembership } from "@/utils/auth";
 import { useEffect, useState } from "react";
 
 import { Post } from "@/types/post";
@@ -106,6 +107,35 @@ export default function My() {
         }}
       >
         {"게시물 작성"}
+      </button>
+      <button
+        className={styles.sortButton}
+        onClick={async () => {
+          const response = await logOut();
+
+          // @ts-ignore
+          if (response.data === "SUCCESS") {
+            alert("로그아웃에 성공했습니다.");
+            router.push("/auth/login");
+          }
+        }}
+      >
+        {"로그아웃"}
+      </button>
+
+      <button
+        className={styles.sortButton}
+        onClick={async () => {
+          const response = await withdrawMembership();
+
+          // @ts-ignore
+          if (response.data === "SUCCESS") {
+            alert("회원탈퇴에 성공했습니다.");
+            router.push("/auth/login");
+          }
+        }}
+      >
+        {"회원탈퇴"}
       </button>
     </main>
   );

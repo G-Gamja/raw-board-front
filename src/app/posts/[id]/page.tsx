@@ -152,21 +152,6 @@ export default function Posts({ params }: { params: { id: string } }) {
       >
         {"게시물 작성"}
       </button>
-
-      <button
-        className={styles.sortButton}
-        onClick={async () => {
-          const response = await logOut();
-
-          // @ts-ignore
-          if (response.data === "SUCCESS") {
-            alert("로그아웃에 성공했습니다.");
-            router.push("/auth/login");
-          }
-        }}
-      >
-        {"로그아웃"}
-      </button>
     </main>
   );
 }

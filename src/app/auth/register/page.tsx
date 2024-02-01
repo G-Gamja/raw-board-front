@@ -2,6 +2,7 @@
 
 import { AxiosError } from "axios";
 import { post } from "@/utils/axios";
+import { register } from "@/utils/auth";
 import styles from "./page.module.scss";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,9 +12,10 @@ import { useState } from "react";
 // FIXME 가입 페이지도 구현
 
 // FIXME 로그인시에 auth정보를 전역변수에 저장해야하나 쿠키에 저장해야하나 고민
-export default function Login() {
+export default function Register() {
   const router = useRouter();
   const [inputId, setInputId] = useState<string>();
+  const [inputUsername, setInputUsername] = useState<string>();
   const [inputPassword, setInputPassword] = useState<string>();
 
   const login = async (id?: string, password?: string) => {
@@ -30,7 +32,7 @@ export default function Login() {
   return (
     <main className={styles.main}>
       <div className={styles.title}>
-        <h1>Login</h1>
+        <h1>Register</h1>
       </div>
 
       <input
@@ -39,6 +41,14 @@ export default function Login() {
           setInputId(input.target.value);
         }}
         placeholder="email"
+        className={styles.input}
+      />
+      <input
+        type="text"
+        onChange={(input) => {
+          setInputUsername(input.target.value);
+        }}
+        placeholder="username"
         className={styles.input}
       />
       <input
@@ -54,7 +64,18 @@ export default function Login() {
         className={styles.loginButton}
         onClick={async () => {
           try {
-            await login(inputId, inputPassword);
+            if (inputId && inputPassword && inputUsername) {
+              const response = await register(
+                inputId,
+                inputUsername,
+                inputPassword
+              );
+
+              if ((response as { data?: string })?.data === "SUCCESS") {
+                alert("회원가입 성공");
+                router.push("/auth/login");
+              }
+            }
           } catch (error) {
             if (error instanceof AxiosError) {
               alert(error.response?.data.message);
@@ -62,16 +83,7 @@ export default function Login() {
           }
         }}
       >
-        login
-      </button>
-
-      <button
-        className={styles.loginButton}
-        onClick={() => {
-          router.push("/auth/register");
-        }}
-      >
-        회원가입하기
+        register
       </button>
     </main>
   );
