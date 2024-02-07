@@ -1,7 +1,7 @@
 "use client";
 
 import { getPosts, writePost } from "@/utils/posts";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Post } from "@/types/post";
 import { User } from "@/types/user";
@@ -10,7 +10,6 @@ import { logOut } from "@/utils/auth";
 import styles from "./page.module.scss";
 import { useRouter } from "next/navigation";
 
-// FIXME 페이지 이동시에 isDesc변수가 초기화 되어버림. 로컬스토리지에 저장해야할듯
 export default function Posts({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [inputTitle, setInputTitle] = useState<string>("");
@@ -23,7 +22,11 @@ export default function Posts({ params }: { params: { id: string } }) {
 
   const [fetchedUser, setFetchedUser] = useState<User>();
 
-  const [isDesc, setIsDesc] = useState<boolean>(true);
+  const loacalStorageIsDesc = useMemo(() => localStorage.getItem("isDesc"), []);
+
+  const [isDesc, setIsDesc] = useState<boolean>(
+    loacalStorageIsDesc === "true" ? true : false
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +45,10 @@ export default function Posts({ params }: { params: { id: string } }) {
 
     fetchData();
   }, [isDesc, params.id, isWritePostClicked, inputSearch]);
+
+  useEffect(() => {
+    localStorage.setItem("isDesc", isDesc.toString());
+  }, [isDesc]);
 
   // TODO 총 페이지 수를 받아와서 다음 페이지 버튼을 비활성화 시키는 로직 구현
   return (
